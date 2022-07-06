@@ -1,41 +1,14 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Card,
-  Image,
-  Paper,
-  SimpleGrid,
-  Title,
-} from "@mantine/core";
+import { SimpleGrid } from "@mantine/core";
+import StoryCard from "~/components/Story/StoryCard";
 
-export default function Home() {
+export default function IndexRoute() {
   return (
     <>
       {/* stories  */}
 
       <SimpleGrid cols={5}>
         {stories.map((story) => (
-          <Paper sx={{ position: "relative" }}>
-            <Image src={story.thumbnail} radius="md" alt={story.author.name} />
-
-            <Avatar
-              sx={{ position: "absolute", top: 0 }}
-              m={"xs"}
-              src={story.author.profilePic}
-              alt={story.author.name}
-            />
-            <Title
-              order={6}
-              sx={{
-                position: "absolute",
-                bottom: 0,
-              }}
-              m="xs"
-            >
-              {story.author.name}
-            </Title>
-          </Paper>
+          <StoryCard story={story} />
         ))}
       </SimpleGrid>
     </>
