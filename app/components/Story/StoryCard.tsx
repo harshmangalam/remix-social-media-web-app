@@ -1,16 +1,18 @@
-import { Avatar, Image, Paper, Title } from "@mantine/core";
+import { Avatar, Box, Image, Indicator, Paper, Title } from "@mantine/core";
 
 export default function StoryCard({ story }) {
   return (
     <Paper sx={{ position: "relative" }}>
       <Image src={story.thumbnail} radius="md" alt={story.author.name} />
-
+      <Box sx={{ position: "absolute", top: 0 }}>
+      <Indicator inline size={16} offset={7} position="bottom-end" color="red" withBorder>
       <Avatar
-        sx={{ position: "absolute", top: 0 }}
-        m={"xs"}
+        size="lg"
+        radius="xl"
         src={story.author.profilePic}
-        alt={story.author.name}
       />
+    </Indicator>
+      </Box>
       <Title
         order={6}
         sx={{
