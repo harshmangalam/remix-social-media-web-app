@@ -15,11 +15,19 @@ import {
   UnstyledButton,
 } from "@mantine/core";
 import { Link } from "@remix-run/react";
+import { useState } from "react";
 import { BsImages } from "react-icons/bs";
 import { CgClose } from "react-icons/cg";
 import { FaFacebook } from "react-icons/fa";
 import { VscTextSize } from "react-icons/vsc";
+import PhotoStoryFields from "~/components/Story/Create/PhotoStoryFields";
+import TextStoryFields from "~/components/Story/Create/TextStoryFields";
+
+type StoryType = "photo" | "text" | null;
+
 export default function CreateStoriesRoute() {
+  const [storyType, setStoryType] = useState<StoryType>();
+
   return (
     <AppShell
       padding="md"
@@ -42,7 +50,7 @@ export default function CreateStoriesRoute() {
             </Group>
           </Navbar.Section>
 
-          <Navbar.Section grow mt="md">
+          <Navbar.Section mt="md">
             <Title mb={"sm"} order={4}>
               Your Story
             </Title>
@@ -86,12 +94,24 @@ export default function CreateStoriesRoute() {
             </UnstyledButton>
           </Navbar.Section>
 
-          <Navbar.Section>
-            <Group>
-              <Button color={"gray"}>Discard</Button>
-              <Button>Share to Story</Button>
-            </Group>
-          </Navbar.Section>
+          {storyType === "photo" && (
+            <Navbar.Section grow>
+              <PhotoStoryFields />
+            </Navbar.Section>
+          )}
+          {storyType === "text" && (
+            <Navbar.Section grow>
+              <TextStoryFields />
+            </Navbar.Section>
+          )}
+          {storyType && (
+            <Navbar.Section>
+              <Group>
+                <Button color={"gray"}>Discard</Button>
+                <Button>Share to Story</Button>
+              </Group>
+            </Navbar.Section>
+          )}
         </Navbar>
       }
       styles={(theme) => ({
@@ -105,46 +125,46 @@ export default function CreateStoriesRoute() {
     >
       <Center sx={{ height: "100%" }}>
         <Group spacing={"xl"}>
-          <Paper
-            radius={"md"}
-            sx={(theme) => ({
-              width: 200,
-              height: 300,
-              background: theme.colors.indigo[4],
-              color: "white",
-            })}
-            shadow={"md"}
-          >
-            <Center sx={{ width: "100%", height: "100%" }}>
-              <Stack align={"center"} spacing={"xs"}>
-                <ThemeIcon radius="xl" size="xl" color="indigo">
-                  <BsImages size={24} />
-                </ThemeIcon>
-                <Text weight={"bold"}>Create a photo story</Text>
-              </Stack>
-            </Center>
-          </Paper>
-          <Paper
-            radius={"md"}
-            sx={(theme) => ({
-              width: 200,
-              height: 300,
-              background: theme.colors.pink[4],
-              color: "white",
-            })}
-            shadow={"md"}
-          >
-            <Center sx={{ width: "100%", height: "100%" }}>
-              <Stack align={"center"} spacing={"xs"}>
-                <ThemeIcon radius="xl" size="xl" color="pink">
-                  <VscTextSize size={24} />
-                </ThemeIcon>
-                <Text weight={"bold"}>Create a text story</Text>
-              </Stack>
-            </Center>
-          </Paper>
+          {stories.map((story) => (
+            <Paper
+              onClick={() => setStoryType(story.type as StoryType)}
+              radius={"md"}
+              sx={(theme) => ({
+                width: 200,
+                height: 300,
+                background: theme.colors[story.background]["4"],
+                color: "white",
+                cursor: "pointer",
+              })}
+              shadow={"md"}
+            >
+              <Center sx={{ width: "100%", height: "100%" }}>
+                <Stack align={"center"} spacing={"xs"}>
+                  <ThemeIcon radius="xl" size="xl" color={story.background}>
+                    {story.icon}
+                  </ThemeIcon>
+                  <Text weight={"bold"}>{story.text}</Text>
+                </Stack>
+              </Center>
+            </Paper>
+          ))}
         </Group>
       </Center>
     </AppShell>
   );
 }
+
+const stories = [
+  {
+    type: "photo",
+    icon: <BsImages size={24} />,
+    text: "Create a photo story",
+    background: "indigo",
+  },
+  {
+    type: "text",
+    icon: <VscTextSize size={24} />,
+    text: "Create a text story",
+    background: "pink",
+  },
+];
