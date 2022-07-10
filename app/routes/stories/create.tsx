@@ -4,6 +4,7 @@ import {
   Avatar,
   Button,
   Center,
+  Divider,
   Group,
   Indicator,
   Navbar,
@@ -29,6 +30,10 @@ type StoryType = "photo" | "text" | null;
 
 export default function CreateStoriesRoute() {
   const [storyType, setStoryType] = useState<StoryType>();
+  const [textStory, setTextStory] = useState({
+    text: "",
+    background: "#25262b",
+  });
 
   return (
     <AppShell
@@ -97,13 +102,16 @@ export default function CreateStoriesRoute() {
           </Navbar.Section>
 
           {storyType === "photo" && (
-            <Navbar.Section grow>
+            <Navbar.Section grow mt={"sm"}>
               <PhotoStoryFields />
             </Navbar.Section>
           )}
           {storyType === "text" && (
-            <Navbar.Section grow>
-              <TextStoryFields />
+            <Navbar.Section grow mt={"sm"}>
+              <TextStoryFields
+                textStory={textStory}
+                setTextStory={setTextStory}
+              />
             </Navbar.Section>
           )}
           {storyType && (
@@ -128,7 +136,7 @@ export default function CreateStoriesRoute() {
       })}
     >
       {storyType === "photo" && <StoryPhotoPreview />}
-      {storyType === "text" && <StoryTextPreview />}
+      {storyType === "text" && <StoryTextPreview textStory={textStory} />}
       {!storyType && (
         <Center sx={{ height: "100%" }}>
           <Group spacing={"xl"}>
