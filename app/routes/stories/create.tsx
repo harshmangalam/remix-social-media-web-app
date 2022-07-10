@@ -22,6 +22,8 @@ import { FaFacebook } from "react-icons/fa";
 import { VscTextSize } from "react-icons/vsc";
 import PhotoStoryFields from "~/components/Story/Create/PhotoStoryFields";
 import TextStoryFields from "~/components/Story/Create/TextStoryFields";
+import StoryPhotoPreview from "~/components/Story/Preview/StoryPhotoPreview";
+import StoryTextPreview from "~/components/Story/Preview/StoryTextPreview";
 
 type StoryType = "photo" | "text" | null;
 
@@ -107,7 +109,9 @@ export default function CreateStoriesRoute() {
           {storyType && (
             <Navbar.Section>
               <Group>
-                <Button color={"gray"}>Discard</Button>
+                <Button onClick={() => setStoryType(null)} color={"gray"}>
+                  Discard
+                </Button>
                 <Button>Share to Story</Button>
               </Group>
             </Navbar.Section>
@@ -123,33 +127,37 @@ export default function CreateStoriesRoute() {
         },
       })}
     >
-      <Center sx={{ height: "100%" }}>
-        <Group spacing={"xl"}>
-          {stories.map((story) => (
-            <Paper
-              onClick={() => setStoryType(story.type as StoryType)}
-              radius={"md"}
-              sx={(theme) => ({
-                width: 200,
-                height: 300,
-                background: theme.colors[story.background]["4"],
-                color: "white",
-                cursor: "pointer",
-              })}
-              shadow={"md"}
-            >
-              <Center sx={{ width: "100%", height: "100%" }}>
-                <Stack align={"center"} spacing={"xs"}>
-                  <ThemeIcon radius="xl" size="xl" color={story.background}>
-                    {story.icon}
-                  </ThemeIcon>
-                  <Text weight={"bold"}>{story.text}</Text>
-                </Stack>
-              </Center>
-            </Paper>
-          ))}
-        </Group>
-      </Center>
+      {storyType === "photo" && <StoryPhotoPreview />}
+      {storyType === "text" && <StoryTextPreview />}
+      {!storyType && (
+        <Center sx={{ height: "100%" }}>
+          <Group spacing={"xl"}>
+            {stories.map((story) => (
+              <Paper
+                onClick={() => setStoryType(story.type as StoryType)}
+                radius={"md"}
+                sx={(theme) => ({
+                  width: 200,
+                  height: 300,
+                  background: theme.colors[story.background]["4"],
+                  color: "white",
+                  cursor: "pointer",
+                })}
+                shadow={"md"}
+              >
+                <Center sx={{ width: "100%", height: "100%" }}>
+                  <Stack align={"center"} spacing={"xs"}>
+                    <ThemeIcon radius="xl" size="xl" color={story.background}>
+                      {story.icon}
+                    </ThemeIcon>
+                    <Text weight={"bold"}>{story.text}</Text>
+                  </Stack>
+                </Center>
+              </Paper>
+            ))}
+          </Group>
+        </Center>
+      )}
     </AppShell>
   );
 }
