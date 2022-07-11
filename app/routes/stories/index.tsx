@@ -13,11 +13,20 @@ import {
   UnstyledButton,
 } from "@mantine/core";
 import { Link } from "@remix-run/react";
+import { useState } from "react";
 import { BsImage } from "react-icons/bs";
 import { CgClose } from "react-icons/cg";
 import { FaFacebook } from "react-icons/fa";
 import { HiOutlinePlus } from "react-icons/hi";
+import ViewStory from "~/components/Story/ViewStory";
 export default function StoriesRoute() {
+  const [selectedStory, setSelectedStory] = useState({
+    photo:
+      "https://images.unsplash.com/photo-1657480195085-53a743963343?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60",
+    author: {
+      name: "Harsh Mangalam",
+    },
+  });
   return (
     <AppShell
       padding="md"
@@ -46,8 +55,8 @@ export default function StoriesRoute() {
 
             <Stack spacing={1}>
               <UnstyledButton
-              component={Link}
-              to="/stories/create"
+                component={Link}
+                to="/stories/create"
                 sx={(theme) => ({
                   display: "block",
                   width: "100%",
@@ -179,14 +188,18 @@ export default function StoriesRoute() {
         },
       })}
     >
-      <Center sx={{ height: "100%" }}>
-        <Stack align={"center"}>
-          <BsImage size={96} color="gray" />
-          <Text size="xl" weight={"bold"} color={"gray"}>
-            Create Stories
-          </Text>
-        </Stack>
-      </Center>
+      {selectedStory ? (
+        <ViewStory {...selectedStory} />
+      ) : (
+        <Center sx={{ height: "100%" }}>
+          <Stack align={"center"}>
+            <BsImage size={96} color="gray" />
+            <Text size="xl" weight={"bold"} color={"gray"}>
+              Select story to open
+            </Text>
+          </Stack>
+        </Center>
+      )}
     </AppShell>
   );
 }
