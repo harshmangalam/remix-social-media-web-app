@@ -4,7 +4,6 @@ import {
   Avatar,
   Button,
   Center,
-  Divider,
   Group,
   Indicator,
   Navbar,
@@ -16,7 +15,7 @@ import {
   UnstyledButton,
 } from "@mantine/core";
 import { Link } from "@remix-run/react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { BsImages } from "react-icons/bs";
 import { CgClose } from "react-icons/cg";
 import { FaFacebook } from "react-icons/fa";
@@ -35,6 +34,18 @@ export default function CreateStoriesRoute() {
     background: "#25262b",
   });
 
+  const [selectedPhoto, setSelectedPhoto] = useState<string>("");
+
+  function handleDiscardStory() {
+    if (storyType === "photo") {
+      setSelectedPhoto("");
+    }
+    if (storyType === "text") {
+      setTextStory({ text: "", background: "#25262b" });
+    }
+
+    setStoryType(null);
+  }
   return (
     <AppShell
       padding="md"
@@ -103,7 +114,7 @@ export default function CreateStoriesRoute() {
 
           {storyType === "photo" && (
             <Navbar.Section grow mt={"sm"}>
-              <PhotoStoryFields />
+              <PhotoStoryFields setSelectedPhoto={setSelectedPhoto} />
             </Navbar.Section>
           )}
           {storyType === "text" && (
@@ -117,7 +128,7 @@ export default function CreateStoriesRoute() {
           {storyType && (
             <Navbar.Section>
               <Group>
-                <Button onClick={() => setStoryType(null)} color={"gray"}>
+                <Button onClick={handleDiscardStory} color={"gray"}>
                   Discard
                 </Button>
                 <Button>Share to Story</Button>
@@ -135,7 +146,9 @@ export default function CreateStoriesRoute() {
         },
       })}
     >
-      {storyType === "photo" && <StoryPhotoPreview />}
+      {storyType === "photo" && (
+        <StoryPhotoPreview selectedPhoto={selectedPhoto} />
+      )}
       {storyType === "text" && <StoryTextPreview textStory={textStory} />}
       {!storyType && (
         <Center sx={{ height: "100%" }}>
