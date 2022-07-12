@@ -1,4 +1,5 @@
 import {
+  AspectRatio,
   Box,
   Center,
   Group,
@@ -30,14 +31,16 @@ export default function StoryPhotoPreview({
           p={"md"}
         >
           {selectedPhoto ? (
-            <Center sx={{ width: "50%", height: "100%", margin: "auto" }}>
-              <Image
-                radius="md"
-                src={selectedPhoto}
-                width="100%"
-                height={"100%"}
-              />
-            </Center>
+           
+              <AspectRatio ratio={720 / 1080} sx={{ maxWidth: 400 }} mx="auto">
+                <Image
+                  radius="md"
+                  src={selectedPhoto}
+                  width="100%"
+                  height={"100%"}
+                />
+              </AspectRatio>
+         
           ) : (
             <Center sx={{ height: "100%" }}>
               <Stack justify={"center"} align={"center"}>
