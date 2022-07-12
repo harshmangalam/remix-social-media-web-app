@@ -29,6 +29,7 @@ export default function StoriesRoute() {
   });
   return (
     <AppShell
+    
       padding={0}
       navbar={
         <Navbar width={{ base: 350 }} p="xs">
